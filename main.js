@@ -1,7 +1,45 @@
-// .btn-warning 
-// div .classbutton > strong contains text
+const AWS = require('aws-sdk');
+const cli = require('cli');
 
 const puppeteer = require('puppeteer');
+
+const cliParams = cli.parse({
+  credentials: [ 'c', 'AWS credentials', 'string', '' ],
+  password: [ 'p', 'password', 'string', ''],
+  email: [ 'e', 'login email aka user name', 'mirka.lison@gmail.com'],
+});
+
+const password = cliParams.password;
+const email = cliParams.email;
+
+AWS.config.credentials = JSON.parse(cliParams.credentials);
+
+const ses = new AWS.SES();
+
+var emailParams = {
+  Destination: {
+    ToAddresses: [
+      'mirka.lison@gmail.com'
+    ],
+  },
+  Message: {
+    Body: {
+      Html: {
+        Data: 'Booking successfull',
+        Charset: "UTF-8",
+      },
+      Text: {
+        Data: 'Booking successfull',
+        Charset: "UTF-8",
+      }
+    },
+    Subject: {
+      Data: 'Booking successfull',
+      Charset: "UTF-8"
+    }
+  },
+  Source: 'mirka.lison@gmail.com'
+};
 
 (async () => {
   const browser = await puppeteer.launch();
@@ -9,9 +47,9 @@ const puppeteer = require('puppeteer');
   await page.goto('https://polenow.com/login.php');
   await page.waitForSelector("[name=loginform]");
   await page.click("input[name=loginemail]");
-  await page.type("input[name=loginemail]", 'mirka.lison@gmail.com');
+  await page.type("input[name=loginemail]", email);
   await page.click("input[name=loginpassword]");
-  await page.type("input[name=loginpassword]", 'predator');
+  await page.type("input[name=loginpassword]", password);
   await page.click("button[type=submit]");
 
   await page.waitForSelector("[class=CALENDARCONT]");
@@ -21,7 +59,16 @@ const puppeteer = require('puppeteer');
     await button.screenshot({path: 'example.png'});
     await button.click();
     console.log('subscription success!');
-    await browser.close();
+
+    ses.sendEmail(emailParams, function(err, data) {
+      if (err) {
+        console.log(err, err.stack);
+      }
+      else {
+        console.log('email sent');
+        await browser.close();
+      }
+    });
   }
 
   const checkPage = async (index) => {
