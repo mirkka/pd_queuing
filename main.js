@@ -6,7 +6,7 @@ const puppeteer = require('puppeteer');
 const cliParams = cli.parse({
   credentials: [ 'c', 'AWS credentials', 'string', '' ],
   password: [ 'p', 'password', 'string', ''],
-  email: [ 'e', 'login email aka user name', 'mirka.lison@gmail.com'],
+  email: [ 'e', 'login email aka user name', 'string', 'mirka.lison@gmail.com'],
 });
 
 const password = cliParams.password;
@@ -52,7 +52,6 @@ const emailParams = {
   await page.type("input[name=loginpassword]", password);
   await page.click("button[type=submit]");
 
-  console.log(email, password);
   await page.waitForSelector("[class=CALENDARCONT]");
   console.log('login success');
 
@@ -61,15 +60,15 @@ const emailParams = {
     await button.click();
     console.log('subscription success!');
 
-    ses.sendEmail(emailParams, function(err, data) {
+    ses.sendEmail(emailParams, (err, data) => {
       if (err) {
         console.log(err, err.stack);
-      }
-      else {
+      } else {
         console.log('email sent');
-        await browser.close();
       }
     });
+
+    await browser.close();
   }
 
   const checkPage = async (index) => {
