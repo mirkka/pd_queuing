@@ -16,7 +16,7 @@ AWS.config.credentials = JSON.parse(cliParams.credentials);
 
 const ses = new AWS.SES();
 
-var emailParams = {
+const emailParams = {
   Destination: {
     ToAddresses: [
       'mirka.lison@gmail.com'
@@ -52,11 +52,12 @@ var emailParams = {
   await page.type("input[name=loginpassword]", password);
   await page.click("button[type=submit]");
 
+  console.log(email, password);
   await page.waitForSelector("[class=CALENDARCONT]");
   console.log('login success');
 
   const handleButton = async (button) => {
-    await button.screenshot({path: 'example.png'});
+    await page.screenshot({path: 'example.png', fullPage: true});
     await button.click();
     console.log('subscription success!');
 
@@ -72,7 +73,6 @@ var emailParams = {
   }
 
   const checkPage = async (index) => {
-    await page.screenshot({path: 'example.png'});
     try {
       await page.waitForSelector('.glyphicon-plus', {timeout: 10 * 1000});
     } catch (error) {
