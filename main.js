@@ -84,7 +84,19 @@ let emailParams = {
       }
     });
 
+    await logout();
     await browser.close();
+  }
+
+  const logout = async () => {
+    try {
+      await page.waitForSelector('a[href*="action=logout"]', {timeout: 10 * 1000});
+      const logoutButton = await page.$('a[href*="action=logout"]');
+      await logoutButton.click();
+      console.log(new Date(), 'Logout');
+    } catch (error) {
+      console.log(new Date(), error);
+    }
   }
 
   const checkPage = async (index) => {
@@ -92,19 +104,20 @@ let emailParams = {
       await page.waitForSelector('.glyphicon-plus', {timeout: 10 * 1000});
     } catch (error) {
       console.log(new Date(), 'no queued class found');
+      await logout();
       await browser.close();
       return;
     }
 
     //for testing only - creates fake queue button
-    // change class ID in href selector
-    // if(index === 0) {
-    //   await page.evaluate(() => {
-    //     let elem = document.querySelector('a[href*="classid=26328"][title="Book class"]');
-    //     if(!elem) { return; }
-    //     elem.classList.add('btn-warning');
-    //   });
-    // }
+    //change class ID in href selector
+    if(index === 0) {
+      await page.evaluate(() => {
+        let elem = document.querySelector('a[href*="classid=26677"][title="Book class"]');
+        if(!elem) { return; }
+        elem.classList.add('btn-warning');
+      });
+    }
 
     const button = await page.$('.btn-warning');
 
