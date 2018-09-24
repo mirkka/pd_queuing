@@ -111,13 +111,13 @@ let emailParams = {
 
     //for testing only - creates fake queue button
     //change class ID in href selector
-    if(index === 0) {
-      await page.evaluate(() => {
-        let elem = document.querySelector('a[href*="classid=26677"][title="Book class"]');
-        if(!elem) { return; }
-        elem.classList.add('btn-warning');
-      });
-    }
+    // if(index === 0) {
+    //   await page.evaluate(() => {
+    //     let elem = document.querySelector('a[href*="classid=26677"][title="Book class"]');
+    //     if(!elem) { return; }
+    //     elem.classList.add('btn-warning');
+    //   });
+    // }
 
     const button = await page.$('.btn-warning');
 
