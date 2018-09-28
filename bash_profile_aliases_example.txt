@@ -1,0 +1,2 @@
+alias pdq_start='aws ec2 run-instances --launch-template LaunchTemplateId=<templateId>,<templateVersion>'
+alias pdq_stop='sh ~/Documents/pd_queuing/script.sh'

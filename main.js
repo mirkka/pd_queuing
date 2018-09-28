@@ -109,11 +109,11 @@ let emailParams = {
       return;
     }
 
-    //for testing only - creates fake queue button
+    //Uncomment this for testing - creates fake queue button
     //change class ID in href selector
     // if(index === 0) {
     //   await page.evaluate(() => {
-    //     let elem = document.querySelector('a[href*="classid=26677"][title="Book class"]');
+    //     let elem = document.querySelector('a[href*="classid=<classId>"][title="Book class"]');
     //     if(!elem) { return; }
     //     elem.classList.add('btn-warning');
     //   });
