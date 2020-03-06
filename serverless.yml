@@ -1,0 +1,41 @@
+service: poledancing-queueing
+
+frameworkVersion: ">=1.21.0 <2.0.0"
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: prod
+  region: eu-west-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - ses:SendEmail
+        - ses:SendRawEmail
+      Resource:
+        - "*"
+  layers:
+    # Google Chrome for AWS Lambda as a layer
+    # Make sure you use the latest version depending on the region
+    # https://github.com/shelfio/chrome-aws-lambda-layer
+    - arn:aws:lambda:${self:provider.region}:764866452798:layer:chrome-aws-lambda:10
+
+
+functions:
+  nodeApp:
+    handler: lambda/app.handler
+    environment:
+      PW: ${ssm:polenow_password}
+      USERNAME: ${ssm:polenow_username}
+      REGION: eu-west-1
+
+resources:
+  Resources:
+    GiveSESPermissionToInvokeNodeAppLambdaFunction:
+      Type: AWS::Lambda::Permission
+      Properties:
+        FunctionName: { "Fn::GetAtt": [ "NodeAppLambdaFunction", "Arn" ] }
+        Principal: ses.amazonaws.com
+        Action: 'lambda:InvokeFunction'
+        SourceAccount: { Ref: AWS::AccountId }
+
