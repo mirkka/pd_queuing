@@ -39,3 +39,4 @@ resources:
         Action: 'lambda:InvokeFunction'
         SourceAccount: { Ref: AWS::AccountId }
 
+# TODO: Add SES setup
