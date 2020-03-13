@@ -1,26 +1,11 @@
 const AWS = require("aws-sdk")
-
-// this module will be provided by the layer
 const chromeLambda = require("chrome-aws-lambda")
 
 exports.handler = async event => {
-  console.log(JSON.stringify(event))
   const {
     PW,
     USERNAME,
   } = process.env
-
-  // try {
-  //   const parsedCredentials = JSON.parse(cliParams.credentials);
-  //   awsCredentials.email = parsedCredentials.email;
-  //   awsCredentials.password = parsedCredentials.password;
-  //   awsRegion = parsedCredentials.region;
-  // } catch (error) {
-  //   console.log(new Date(), 'ERROR', error);
-  //   return;
-  // }
-
-  // AWS.config.region = REGION
 
   var ses = new AWS.SES({
     region: 'eu-west-1'
@@ -55,7 +40,6 @@ exports.handler = async event => {
     height: 1080
   }
 
-
   const browser = await chromeLambda.puppeteer.launch({
     args: chromeLambda.args,
     executablePath: await chromeLambda.executablePath,
@@ -75,7 +59,6 @@ exports.handler = async event => {
   console.log("login success")
 
   const handleButton = async (button, classDetails) => {
-    console.log(3)
     await button.click()
     console.log(`Subscription successfull! Booked at ${new Date()}`)
 
@@ -120,7 +103,6 @@ exports.handler = async event => {
       await browser.close()
       return
     }
-    console.log(1)
 
     //Uncomment this for testing - creates fake queue button
     //change class ID in href selector
@@ -133,10 +115,8 @@ exports.handler = async event => {
     // }
 
     const button = await page.$(".btn-warning")
-    console.log(button)
 
     if (!button) {
-      console.log(2)
       const forwardArrow = await page.$(".glyphicon-chevron-right")
 
       await forwardArrow.click()
@@ -152,7 +132,6 @@ exports.handler = async event => {
         .querySelector(".btn-warning")
         .parentElement.querySelector(".classbutton").innerHTML
       )
-      console.log(classDetails)
       await handleButton(button, classDetails)
       return
     }
