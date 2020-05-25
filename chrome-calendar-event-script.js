@@ -24,8 +24,8 @@ function formatTime(timeString, dateString) {
   const start = timeArr[0];
   const end = timeArr[1];
   const date = reverseDate(dateString);
-  const startFormatted = `${date}T${start}:00+02:00`;
-  const endFormatted = `${date}T${end}:00+02:00`;
+  const startFormatted = `${date}T${start}:00+03:00`;
+  const endFormatted = `${date}T${end}:00+03:00`;
   return {
     start: startFormatted,
     end: endFormatted
