@@ -1,2 +1,4 @@
 node_modules
 .serverless
+.DS_Store
+lambda/.DS_Store
