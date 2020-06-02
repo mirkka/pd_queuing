@@ -7,7 +7,7 @@ function initializeApi() {
 }
 
 function authorization() {
-  const CLIENT_ID = "<client_id>";
+  const CLIENT_ID = "<client-id>";
   const SCOPES = ["https://www.googleapis.com/auth/calendar"];
   return gapi.auth.authorize({
     client_id: CLIENT_ID,
@@ -39,7 +39,7 @@ function reverseDate(dateString) {
 function getClassDetailsForEvent(clickerElement) {
   const classDetails = clickerElement.parents('.hour-tag').find('.classbutton').html().split('<br>');
   const classDay = clickerElement.parents('.day-panel').find('.panel-heading a').html().split('<br>');
-  const location = clickerElement.parents('.CALENDARCONTCAL').find('#extrahall1 h4').text();
+  const location = clickerElement.parents('.CALENDARCONTCAL').find('.col-md-12.top-buffer.text-align h4').text();
   const time = classDetails[0];
   const className = classDetails[1].replace(/<[/]?strong>/g, '');
   const date = classDay[1];
