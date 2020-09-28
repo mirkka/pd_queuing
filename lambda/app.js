@@ -92,12 +92,7 @@ exports.handler = async event => {
   }
 
   const checkPage = async index => {
-    try {
-      await page.waitForSelector('.glyphicon-plus', {
-        timeout: 10 * 1000
-      })
-      console.log('check page')
-    } catch (error) {
+    if (index > 3) {
       console.log(new Date(), "no queued class found")
       await logout()
       await browser.close()
@@ -113,6 +108,8 @@ exports.handler = async event => {
     //     elem.classList.add('btn-warning');
     //   });
     // }
+
+    await page.waitFor(2000)
 
     const button = await page.$(".btn-warning")
 

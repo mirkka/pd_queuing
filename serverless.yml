@@ -24,6 +24,7 @@ provider:
 functions:
   nodeApp:
     handler: lambda/app.handler
+    timeout: 15
     environment:
       PW: ${ssm:polenow_password}
       USERNAME: ${ssm:polenow_username}
